@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html>
+	<body>
+        <a style="display: block;" target="_blank" href="http://eloquentjavascript.net/14_event.html#h_NOgRH0Y9st">Exercise</a>
+	</body>
+</html>
+
+<style>
+  .trail { /* className for the trail elements */
+    position: absolute;
+    height: 6px; width: 6px;
+    border-radius: 3px;
+    background: teal;
+  }
+  body {
+    height: 300px;
+  }
+</style>
+
+<script>
+
+    function createTrail(id, x, y) {
+        var trail = document.createElement("div");
+        trail.className = "trail";
+        document.body.appendChild(trail);
+        return trail;
+    }
+
+    var trails = [];
+
+    for (var i = 0; i < 10; i++) {
+        trails.push(createTrail());
+    }
+
+    var currentTrail = 0;
+
+    addEventListener("mousemove", function(event) {
+        trails[currentTrail].style.left = (event.pageX - 4) + "px";
+        trails[currentTrail].style.top = (event.pageY - 4) + "px";
+        currentTrail = (currentTrail + 1) % trails.length;        
+    });
+</script>
