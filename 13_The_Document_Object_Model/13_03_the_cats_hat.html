@@ -1,0 +1,20 @@
+<p style="text-align: center">
+  <img src="cat.png" id="cat" style="position: absolute">
+  <img src="hat.png" id="hat" style="position: absolute">
+</p>
+<script>
+  var cat = document.querySelector("#cat");
+  var hat = document.querySelector("#hat");
+  var angle = 0, lastTime = null;
+  function animate(time) {
+    if (lastTime != null)
+      angle += (time - lastTime) * 0.001;
+    lastTime = time;
+    hat.style.top = (100 + Math.sin(-angle) * 20) + "px";
+    hat.style.left = (500 + Math.cos(-angle) * 200) + "px";
+    cat.style.top = (100 + Math.sin(angle) * 20) + "px";
+    cat.style.left = (500 + Math.cos(angle) * 200) + "px";
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+</script>
