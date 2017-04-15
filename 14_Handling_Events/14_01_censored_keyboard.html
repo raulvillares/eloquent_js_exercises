@@ -1,0 +1,9 @@
+<input type="text">
+<script>
+    var censoredKeys = ["Q".charCodeAt(0), "W".charCodeAt(0), "X".charCodeAt(0)];
+    var field = document.querySelector("input");
+    field.addEventListener("keydown", function(event) {
+        if(censoredKeys.indexOf(event.keyCode) > -1)
+            event.preventDefault();
+    });
+</script>
