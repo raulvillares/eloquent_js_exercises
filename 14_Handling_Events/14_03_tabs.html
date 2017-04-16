@@ -1,0 +1,58 @@
+<!doctype html>
+
+<html>
+	<body>
+        <a style="display: block;" target="_blank" href="http://eloquentjavascript.net/14_event.html#h_Kk1WKx2anJ">Exercise</a>
+        <div id="wrapper">
+            <div data-tabname="one">Tab one</div>
+            <div data-tabname="two">Tab two</div>
+            <div data-tabname="three">Tab three</div>
+        </div>
+	</body>
+</html>
+
+<style>
+  /* Defines a cleaner look for tables */
+  table  { border-collapse: collapse; }
+  td, th { border: 1px solid black; padding: 3px 8px; }
+  th     { text-align: left; }
+</style>
+
+<script>
+    function asTabs(node) {
+        var tabs = [];
+        var buttonDiv = document.createElement("div");
+        function showHideTabs(activeTab) {
+            for(var i = 0; i < tabs.length; i++) {
+                if (tabs[i].getAttribute("data-tabname") == activeTab) {
+                    tabs[i].style.display = "block";
+                    buttonDiv.childNodes[i].style.background = "dodgerblue";
+                } else {
+                    tabs[i].style.display = "none";
+                    buttonDiv.childNodes[i].style.background = "";
+                }
+            }
+        }
+
+        var createButtons = function(divs) {
+            var createButton = function(node) {
+                node.style.display = "none";
+                var button = document.createElement("button");
+                button.textContent = node.getAttribute("data-tabname");
+                tabs.push(node);
+                button.addEventListener("click", function() {
+                    showHideTabs(button.textContent);
+                });
+                return button;
+            }
+
+            for(var i = 0; i < divs.length; i++)
+                buttonDiv.appendChild(createButton(divs[i]));
+            return buttonDiv;
+        }
+        var divs = node.getElementsByTagName("div");
+        document.body.insertBefore(createButtons(divs), node);
+    }
+
+    asTabs(document.querySelector("#wrapper"));
+</script>
