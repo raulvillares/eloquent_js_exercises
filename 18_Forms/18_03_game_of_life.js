@@ -19,44 +19,49 @@ function createGrid(rows, columns) {
 
 }
 
+function getCheckBox(row, column) { return document.getElementById("R"+row+"C"+column); }
+
 function iterate(event) {
 
-	function liveNeighbors(checkbox) {
-		return leftNeighbor+rightNeighbor(checkbox);
-	}
+	function calculateLiveNeighbors(checkbox) {
 
-		function getCheckBox(row, column) {
-			return document.getElementById("R"+row+"C"+column);
-		}
-
-		function getRow(checkbox) { return parseInt(checkbox.getAttribute("row")); }
-		function getColumn(checkbox) { return parseInt(checkbox.getAttribute("column")); }
-	
-		function leftNeighbor(checkbox) {
-			if (checkbox.getAttribute("column") >= 1)
-				return getCheckBox(getRow(checkbox), getColumn(checkbox)-1).checked ? 1 : 0;
+		function checkCell(row,column) {
+			if((row >= 0) && (row < rows) && (column >=0) && (column < columns))
+				return getCheckBox(row, column).checked ? 1 : 0;
 			else
 				return 0;
-		}
-		
-		function rightNeighbor(checkbox) {
-			if (checkbox.getAttribute("column") < columns-1)
-				return getCheckBox(getRow(checkbox), getColumn(checkbox)+1).checked ? 1 : 0;
-			else
-				return 0;
-		}		
-	
-	function change(checkbox) {
-		checkbox.checked = checkbox.checked ? false : true;
-		grid[checkbox.getAttribute("row")][checkbox.getAttribute("column")] = (grid[checkbox.getAttribute("row")][checkbox.getAttribute("column")] == true) ? false : true;
-	}
+		}	
+
+		var row = parseInt(checkbox.getAttribute("row"));
+		var column = parseInt(checkbox.getAttribute("column"));
+		return 	checkCell(row-1, column)+
+				checkCell(row+1, column)+
+				checkCell(row, column+1)+
+				checkCell(row, column-1)+
+				checkCell(row-1, column-1)+
+				checkCell(row+1, column-1)+
+				checkCell(row-1, column+1)+
+				checkCell(row+1, column+1);
+	}	
+
+	var changes = [];
 
 	for(var rowIndex = 0; rowIndex < rows; rowIndex++) {
 		for(var columnIndex = 0; columnIndex < columns; ++columnIndex) {
-			liveNeighbors(document.getElementById("R"+rowIndex+"C"+columnIndex));
+			var isAlive = getCheckBox(rowIndex, columnIndex).checked ? true : false;
+			var liveNeighbors = calculateLiveNeighbors(document.getElementById("R"+rowIndex+"C"+columnIndex));
+			if (
+				(isAlive && (liveNeighbors < 2 || liveNeighbors > 3)) ||
+				(!isAlive && liveNeighbors == 3)
+			)
+				changes.push([rowIndex, columnIndex])
 		}
 	}
 
+	changes.forEach(function(position) {
+		var checkbox = getCheckBox(position[0], position[1]);
+		checkbox.checked = checkbox.checked ? false : true;
+	});
 	
 }
 
